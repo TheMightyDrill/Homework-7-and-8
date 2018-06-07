@@ -123,6 +123,8 @@
     <ClInclude Include="Customer.h" />
     <ClInclude Include="CustomerListType.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="QueueType.h" />
+    <ClInclude Include="StackType.h" />
     <ClInclude Include="UnorderedLinkedListType.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

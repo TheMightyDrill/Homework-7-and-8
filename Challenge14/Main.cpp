@@ -1,284 +1,416 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <vector>
+
+#include "CustomerListType.h"
+#include "UnorderedLinkedListType.h"
+#include "QueueType.h"
 
 using namespace std;
 
-#include "Node.h"
-#include "UnorderedLinkedListType.h"
-#include "Customer.h"
-#include "CustomerListType.h"
+class Video {
 
-//LIFO (last in first out)
-
-/*Stack
-
-A data structure in which elements are added
-and removed from one end
-only.
-
-*/
-template<class Type>
-class StackType{
-
-	int maxSize;
-	int size;
-	Node<Type>* head;
+	string movieName;
+	int movieId;
+	string star1;
+	string star2;
+	string producer;
+	string director;
+	string productionCompany;
+	int numberOfCopies;
 
 public:
+	Video() {
+		this->movieName = "";
+		this->movieId = -1;
+		this->star1 = "";
+		this->star2 = "";
+		this->producer = "";
+		this->director = "";
+		this->productionCompany = "";
+		this->numberOfCopies = 0;
+	}
 
-	StackType() {
+	Video(string movieName,
+		int movieId,
+		string star1,
+		string star2,
+		string producer,
+		string director,
+		string productionCompany,
+		int numberOfCopies) {
 
-		cout << "Stack size: ";
-		cin >> maxSize;
-		cout << "Creating stack..." << endl;
+		this->movieName = movieName;
+		this->movieId = movieId;
+		this->star1 = star1;
+		this->star2 = star2;
+		this->producer = producer;
+		this->director = director;
+		this->productionCompany = productionCompany;
+		this->numberOfCopies = numberOfCopies;
+
+		
+
+	}
+
+	/*Functions*/
+
+	void displayAllInformation() {
+		cout << "Name: " << this->movieName << endl;
+		cout << "ID: " << this->movieId << endl;
+		cout << "Starring: " << this->star1 << endl;
+		cout << "Starring: " << this->star2 << endl;
+		cout << "Producer: " << this->producer << endl;
+		cout << "Director: " << this->director << endl;
+		cout << "Production Company: " << this->productionCompany << endl;
+		cout << "Copes in stock: " << this->numberOfCopies << endl;
+		system("Pause");
+	}
+
+	void rentVideo() {
+		if (this->numberOfCopies > 0) {
+			numberOfCopies--;
+			cout << "Renting: " << this->movieName << endl;
+		}
+	}
+
+	void checkInVideo() {
+		this->numberOfCopies++;
+		cout << this->movieName << " returned succesfully." << endl;
+	}
+
+	void createVideo() {
+		//hehe
+		string strTemp;
+		int numTemp;
+
+		cout << "--Setting new movie--\n";
+
+		cout << "Movie Name: ";
+		cin >> strTemp;
+		this->movieName = strTemp;
+		cin.clear();
+
+		cout << "Movie ID: ";
+		cin >> numTemp;
+		this->movieId = numTemp;
+		cin.clear();
+
+		cout << "Actor 1: ";
+		cin >> strTemp;
+		this->star1 = strTemp;
+		cin.clear();
+
+		cout << "Actor 2: ";
+		cin >> strTemp;
+		this->star2 = strTemp;
+		cin.clear();
+
+		cout << "Producer: ";
+		cin >> strTemp;
+		this->producer = strTemp;
+		cin.clear();
+
+		cout << "Director: ";
+		cin >> strTemp;
+		this->director = strTemp;
+		cin.clear();
+
+		cout << "Production Company: ";
+		cin >> strTemp;
+		this->productionCompany = strTemp;
+		cin.clear();
+
+		cout << "Number of copies in stock: ";
+		cin >> numTemp;
+		this->numberOfCopies = numTemp;
+		cin.clear();
+		cout << "Movie data set." << endl;
 		system("pause");
-		system("CLS");
-		initializeStack();
 	}
 
-	StackType(const StackType<Type>* otherStack) {
-		copyStack();
+	/*GET*/
+	string getName() {
+		return this->movieName;
+	}
+	int getId() {
+		return this->movieId;
+	}
+	string getStar1() {
+		return this->star1;
+	}
+	string getStar2() {
+		return this->star2;
+	}
+	string getProducer() {
+		return this->producer;
+	}
+	string getDirector() {
+		return this->director;
+	}
+	string getProductionCompany() {
+		return this->productionCompany;
+	}
+	int getNumOfCopies() {
+		return this->numberOfCopies;
 	}
 
-	void initializeStack() {
-		this->head = 0;
-		size = 0;
+
+	/*SET*/
+
+	void setName(string name) {
+		this->movieName = name;
 	}
-
-	//push (add)
-	void push(Type info) {
-		if (this->size <= this->maxSize) {
-			Node<Type>* temp = new Node<Type>();
-
-			temp->setInfo(info);
-			temp->setNext(this->head);
-			this->head = temp;
-
-			size++;
-		}
-		else {
-			cout << "Stack is full..." << endl;
- 			system("pause");
-		}
+	void setId(int id) {
+		this->movieId = id;
 	}
-	//push (other stack info) (only works with 1 I believe...
-	void push(Node<Type>* info) {
-		if (this->size <= this->maxSize) {
-
-			info->setNext(this->head);
-			this->head = info;
-
-		}
-		else {
-			cout << "Stack is full..." << endl;
-			system("pause");
-		}
+	void setStar1(string star) {
+		this->star1 = star;
 	}
-
-	//pop (remove top element)
-	void pop() {
-
-		if (this->head != NULL) {
-			Node<Type>* temp = head;
-			if (head->getNext() != NULL) {
-				this->head = head->getNext();
-			}
-			else {
-				this->head = 0;
-			}
-			//delete temp; /*Try to fix this at some point...*/
-			size--;
-		}
-
+	void setStar2(string star) {
+		this->star2 = star;
 	}
-	//isFullstack (checks if full)
-	bool isFullStack() {
-		if (this->size == this->maxSize) {
-			return true;
-		}
-		else {
-			return false;
-		}
-
-		return false;
+	void setProducer(string prod) {
+		this->producer = prod;
 	}
-	//isEmptyStack (checks if empty)
-	bool isEmptyStack() {
-		if (this->size == 0) {
-			return true;
-		}
-
-		return false;
+	void setDirector(string direct) {
+		this->director = direct;
 	}
-
-	int getSize() {
-		return this->size;
+	void setProductionCompany(string comp) {
+		this->productionCompany = comp;
 	}
-	int getMaxSize() {
-		return this->maxSize;
-	}
-	//returns address of top item in stack
-	Node<Type>* top() {
-		return this->head;
-	}
-
-	//copies other stack into this one
-	void copyStack(StackType<Type>& otherStack) {
-
-		int x = this->size;
-
-		//delete current stack info
-		for (int i = 0; i < x; i++) {
-			this->pop();
-		}
-
-		this->head = 0;
-
-		this->size = otherStack.getSize();
-		this->maxSize = otherStack.getMaxSize();
-	
-
-		Node<Type>* temp;
-		temp = otherStack.top();
-
-		this->head = temp;
-
-	}
-
-	StackType<Type>& operator=(StackType<Type>& oStack) {
-		if (this == &oStack) {
-			return *this;
-		}
-
-		copyStack(oStack);
-	}
-
-	//Challenge #3 function operation
-
-	void reverseStack(StackType<Type> &otherStack) {
-		this->size = otherStack.getSize();
-		this->maxSize = otherStack.getMaxSize();
-
-		//clear this stack
-		for (int i = 0; i < this->size; i++) {
-			this->pop();
-		}
-
-		for (int i = 0; i < otherStack.getSize(); i++) {
-			this->push(otherStack.top());
-		}
+	void setNumOfCopies(int cop) {
+		this->numberOfCopies = cop;
 	}
 };
 
-//FIFO (First in firsto out)
-//elements are added at one end (back, rear)
-//elements are deleted (front)
-template<class Type>
-class QueueType {
+class videoStore {
+	int numberOfVideos;
+	int numberOfCustomers;
+	Video video; //temp video
+	Customer customer; //temp customer
 
-	int size;
-	int maxSize;
-	Node<Type>* front;
-	Node<Type>* back;
+	//containers
+	vector<Video> videolist;
+	vector<Customer> customerList;
 
+	//parallel containers (waiting list)
+	QueueType<int> customerWaitingList; //holds id
+	vector<int> movieWaitingList; //holds movie id's that are out of stock
+
+	vector<string> rentedVideos; //push video name of rented videos
 public:
 
-	//constructor
-	QueueType(){
-		this->size = this->maxSize = 0;
-		cout << "Queue size: ";
-		cin >> maxSize;
 
-		front = 0;
-		back = 0;
-	}
+	/*FUNCTIONS*/
 
-	//addQueue (Adds new element to the rear of que)
-	void add(Type info) {
+	void rentVideo() {
 
-		if (this->back == 0) {
-			back = new Node<Type>(info);
-			this->front = back;
-			size++;
-			return;
+		int mId;
+		int cId;
+
+		cout << "Rent a movie" << endl;
+		for (int i = 0; i < videolist.size(); i++) {
+			cout << "Name: " << videolist[i].getName() << " Id: " << videolist[i].getId() << " Stock:" << videolist[i].getNumOfCopies() << endl;
+		}
+		
+		cout << "Movie Id: ";
+		cin >> mId;
+		cout << "Customer Id: ";
+		cin >> cId;
+
+		//If movie is out of stock customer is pushed onto the queue waiting list
+		if (videolist[mId].getNumOfCopies() <= 0) {
+			cout << "Movie is out of stock..." << endl;
+			movieWaitingList.push_back(mId);
+			cout << "Id: " << customerList[cId].getId() << " - You'll be put on a waiting list." << endl;
+			customerWaitingList.add(customerList[cId].getId());
+			system("pause");
+		}
+		else {
+			videolist[mId].rentVideo(); //updates stock
+			rentedVideos.push_back(videolist[mId].getName()); //updates rented list
+			cout << customerList[cId].getName() << " - Renting: " << videolist[mId].getName() << endl;
+			system("Pause");
 		}
 
-		Node<Type>* temp = new Node<Type>(info);
-
-		//this->front = back;
-		temp->setNext(this->back);
-		this->back = temp;//temp address is the new element at the rear of the line
-		size++;
 	}
-	//deleteQueue (queue must exist, and not be empty. Removes front element)
-	void deleteFront() {
 
-		Node<Type>* temp = this->back;
-		while (temp->getNext()->getNext() != 0){
-			temp = temp->getNext();
+	void returnVideo() {
+		int mId;
+		cout << "Returning Video" << endl;
+		cout << "Movie Id:";
+		cin >> mId;
+
+		videolist[mId].checkInVideo();
+
+		//checks waiting list...
+		for (int i = 0; i < movieWaitingList.size(); i++) {
+			if (movieWaitingList.at(i) == mId) {
+
+				cout << videolist[mId].getName() << " is now in stock..." << endl;
+				break;
+
+			}
 		}
 
-		front = temp; //sets last element as the temp address which should be 1 before the last...
+		//updates rented videolist
 
-		temp = temp->getNext(); //last element
-
-		delete temp; //removes last element address
-
-		front->setNext(0);
-
-		size--; //updates counter
-	}
-	//isEmptyQueue (returns bool, the que is full or not)
-	bool isEmptyQueue() {
-		if (this->size == 0) {
-			return true;
+		for (int i = 0; i < rentedVideos.size(); i++) {
+			if (videolist[mId].getName() == rentedVideos[i]) {
+				rentedVideos[i].erase();
+			}
 		}
 
-		return false;
+		system("pause");
 	}
-	//isFullQueue (returns bool, the que is full or not)
-	bool isFullQueue() {
-		if (this->size == maxSize) {
-			return true;
+
+	void displayAllRentedVideos() {
+		system("CLS");
+		cout << "All rented videos" << endl;
+
+		for (int i = 0; i < rentedVideos.size(); i++) {
+
+			cout << "[" << i << "]: " << rentedVideos[i] << endl;
+
 		}
-
-		return false;
-	} 
-	//initializeQueue (initializes que into empty state)
-	void initializeQueue() {
-		this->front = 0;
-		this->back = 0;
-		size = 0;
-		maxSize = 99; //default size
-
+		cout << "~end of list~" << endl;
+		system("pause");
 	}
 
-	//front (recieves front of que)
-	Node<Type>* returnFront() {
-		return this->front;
-	}
-	//back (recieves back of que)
-	Node<Type>* returnBack() {
-		return this->back;
+	void addVideo() {
+		video.createVideo();
+		videolist.push_back(video);
 	}
 
-	//
+	void showVideoDetails() {
 
+		system("CLS");
+
+		int videoId;
+
+		for (int i = 0; i < videolist.size(); i++) {
+			cout << "~~ Videos ~~" << endl;
+			cout <<"Video [" << i << "]: " << videolist[i].getName() << endl;
+		}
+		cout << "End of list" << endl;
+		cout << endl;
+		cout << "Show video: ";
+		cin >> videoId;
+		system("CLS");
+
+		videolist[videoId].displayAllInformation();
+
+		cin.clear();
+	}
+
+	void showCustomerDetails() {
+
+		system("CLS");
+
+		int customerId;
+
+		for (int i = 0; i < customerList.size(); i++) {
+			cout << "~~ Customers ~~" << endl;
+			cout << "Customer [" << i << "]: " << customerList[i].getName() << endl;
+		}
+		cout << "End of list" << endl;
+		cout << endl;
+		cout << "Show customer: ";
+		cin >> customerId;
+		system("CLS");
+
+		customerList[customerId].displayAllInformation();
+
+		cin.clear();
+	}
+
+	void createNewCustomer() {
+		customer.newCustomer();
+		customerList.push_back(customer);
+	}
+	
+	videoStore() {
+		numberOfVideos = 0;
+		numberOfCustomers = 0;
+	}
 };
 
 int main() {
 
-	StackType<int> list;
-	StackType<int> secondlist;
+	videoStore store;
 
-	list.push(1);
-	list.push(2);
-	list.push(3);
 
-	secondlist.reverseStack(list);
+	//rent a video (check out the video)
+	//return or check in a video
+	//create a list of videos owned by store
+	//show the details of particular video
+	//print a list of all videos                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         .n                                                                         
+	//check whether a particular vieo is in the store
+	//maintain a customre edatabase
+	//print a list of all the videos rented by each customer
+
+	//if a number of video is 0, waitlist que [cust id]
+	//if customer checks in video stock updated notify customer, available for renting
+	//prompt video name & stock, if 0 list all ID's of customers in waiting que
+	//prompt for a cust id and list of videos rented
+
+
+	bool inUse = true;
+	int userInp;
+
+	while (inUse) {
+
+		system("CLS");
+
+		cout << "--Welcome--\n";
+		cout << "[0]Rent a video\n";//rents video for a customer
+		cout << "[1]Add video\n";//adds to video database
+		cout << "[2]Show video detail\n";//show detail, check in stock
+		cout << "[3]Return video\n";
+		cout << "[5]Display videos being rented\n";
+		cout << "[6]Create new customer\n";
+		cout << "[7]Show customer details\n";
+		cout << endl;
+		cout << "[-1 to exit]: ";
+
+		cin >> userInp;
+		cin.clear();
+		switch (userInp) {
+		case 0:
+			store.rentVideo();
+			break;
+		case 1:
+			store.addVideo();
+			break;
+		case 2:
+			store.showVideoDetails();
+			break;
+		case 3:
+			store.returnVideo();
+			break;
+		case 5:
+			store.displayAllRentedVideos();
+			break;
+		case 6:
+			store.createNewCustomer();
+			break;
+		case 7:
+			store.showCustomerDetails();
+			break;
+		case -1:
+			inUse = false;
+			break;
+		default:
+			cout << "Error... exiting progrom" << endl;
+			inUse = false;
+			break;
+		}
+
+	}
+
 
 	system("Pause");
 	return 0;
 }
-

@@ -38,5 +38,11 @@
     <ClInclude Include="CustomerListType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="StackType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QueueType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
