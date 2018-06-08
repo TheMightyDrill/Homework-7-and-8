@@ -19,6 +19,7 @@ class Video {
 	string director;
 	string productionCompany;
 	int numberOfCopies;
+	QueueType<int> waitingList; //holds up to 15 peeps
 
 public:
 	Video() {
@@ -55,6 +56,28 @@ public:
 	}
 
 	/*Functions*/
+
+	void addToWaitingList(int id) {
+		waitingList.add(id);
+	}
+
+	bool checkWaitingList() {
+		return waitingList.isEmptyQueue();
+	}
+
+	bool checkQueue(int id) {
+
+		//if Id is at the front of the queue then they are at the front...
+		if (id == waitingList.returnFront()->getInfo()) {
+			waitingList.deleteFront();
+			return true;
+		}
+		return false;
+	}
+
+	void printWaitingList() {
+		waitingList.print();
+	}
 
 	void displayAllInformation() {
 		cout << "Name: " << this->movieName << endl;
@@ -195,10 +218,6 @@ class videoStore {
 	vector<Video> videolist;
 	vector<Customer> customerList;
 
-	//parallel containers (waiting list)
-	QueueType<int> customerWaitingList; //holds id
-	vector<int> movieWaitingList; //holds movie id's that are out of stock
-
 	vector<string> rentedVideos; //push video name of rented videos
 public:
 
@@ -220,43 +239,68 @@ public:
 		cout << "Customer Id: ";
 		cin >> cId;
 
-		//If movie is out of stock customer is pushed onto the queue waiting list
-		if (videolist[mId].getNumOfCopies() <= 0) {
+		//If movie is out of stock customer is pushed onto the queue waiting list (for the specific video)
+ 		if (videolist[mId].getNumOfCopies() > 0 && !(videolist[mId].checkWaitingList())) {
+
 			cout << "Movie is out of stock..." << endl;
-			movieWaitingList.push_back(mId);
-			cout << "Id: " << customerList[cId].getId() << " - You'll be put on a waiting list." << endl;
-			customerWaitingList.add(customerList[cId].getId());
-			system("pause");
-		}
-		else {
+			cout << "Checking waitlist" << endl;
+
+			//checks to see if the customer who wants to rent is at the beginning of the queue
+			if (videolist[mId].checkQueue(cId)) {
+				cout << "Congrats, your video is ready" << endl;
+
+				videolist[mId].setNumOfCopies(videolist[mId].getNumOfCopies() - 1);
+
+				system("Pause");
+				return;
+			}
+
+			//
+			if (!(videolist[mId].checkWaitingList())) {
+				system("CLS");
+				cout << "Sorry there is a waiting list... these are the customers ID's who are still waiting" << endl;
+				cout << endl;
+				videolist[mId].printWaitingList();
+
+				cout << "You will be added to the waitlist" << endl;
+				videolist[mId].addToWaitingList(cId);
+
+				system("Pause");
+
+				return;
+			}
+
+		} 
+		
+		else if (videolist[mId].getNumOfCopies() <= 0) {
+			
+			cout << "Sorry there is no more of this video in stock..." << endl;
+			cout << "You will be added to the waitlist" << endl;
+			videolist[mId].addToWaitingList(cId);
+
+			system("Pause");
+			return;
+
+		} else {
 			videolist[mId].rentVideo(); //updates stock
 			rentedVideos.push_back(videolist[mId].getName()); //updates rented list
 			cout << customerList[cId].getName() << " - Renting: " << videolist[mId].getName() << endl;
 			system("Pause");
 		}
-
 	}
+
 
 	void returnVideo() {
 		int mId;
+		int cId;
 		cout << "Returning Video" << endl;
 		cout << "Movie Id:";
 		cin >> mId;
+		cin.ignore();
 
 		videolist[mId].checkInVideo();
 
-		//checks waiting list...
-		for (int i = 0; i < movieWaitingList.size(); i++) {
-			if (movieWaitingList.at(i) == mId) {
-
-				cout << videolist[mId].getName() << " is now in stock..." << endl;
-				break;
-
-			}
-		}
-
 		//updates rented videolist
-
 		for (int i = 0; i < rentedVideos.size(); i++) {
 			if (videolist[mId].getName() == rentedVideos[i]) {
 				rentedVideos[i].erase();

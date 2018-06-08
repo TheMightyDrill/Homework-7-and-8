@@ -20,11 +20,27 @@ public:
 	//constructor
 	QueueType() {
 		this->size = this->maxSize = 0;
-		cout << "Queue size: ";
-		cin >> maxSize;
+		
+		maxSize = 15; //default size
 
 		front = 0;
 		back = 0;
+	}
+
+	//prints entire queue
+	void print() {
+
+		Node<Type>* temp;
+		temp = front;
+
+		while (temp != 0) {
+
+			cout << temp->getInfo() << endl;
+
+			temp = temp->getNext();
+		}
+
+		delete temp; //no leaks
 	}
 
 	//addQueue (Adds new element to the rear of que)
@@ -48,7 +64,7 @@ public:
 	void deleteFront() {
 
 		Node<Type>* temp = this->back;
-		while (temp->getNext()->getNext() != 0) {
+		while (temp->getNext()!= 0) {
 			temp = temp->getNext();
 		}
 
