@@ -252,6 +252,8 @@ public:
 
 				videolist[mId].setNumOfCopies(videolist[mId].getNumOfCopies() - 1);
 
+				customerList[cId].rent(videolist[mId].getName()); //sends video name to customer renting list
+
 				system("Pause");
 				return;
 			}
@@ -283,6 +285,8 @@ public:
 			return;
 
 		} else {
+			customerList[cId].rent(videolist[mId].getName()); //sends video name to customer renting list
+
 			videolist[mId].rentVideo(); //updates stock
 			rentedVideos.push_back(videolist[mId].getName()); //updates rented list
 			cout << customerList[cId].getName() << " - Renting: " << videolist[mId].getName() << endl;
@@ -362,6 +366,22 @@ public:
 		cin.clear();
 	}
 
+	void displayCustomerRentedVideos() {
+		system("CLS");
+		cout << "Customer ID:";
+		int cId;
+
+		cin >> cId;
+		cin.ignore();
+		cout << endl;
+
+		cout << "List:" << endl;
+
+		customerList[cId].displayRentedVideos();
+		system("pause");
+
+	}
+
 	void showCustomerDetails() {
 
 		system("CLS");
@@ -426,6 +446,7 @@ int main() {
 		cout << "[1]Add video\n";//adds to video database
 		cout << "[2]Show video detail\n";//show detail, check in stock
 		cout << "[3]Return video\n";
+		cout << "[4]List of videos rented by a customer\n";
 		cout << "[5]Display videos being rented\n";
 		cout << "[6]Create new customer\n";
 		cout << "[7]Show customer details\n";
@@ -446,6 +467,9 @@ int main() {
 			break;
 		case 3:
 			store.returnVideo();
+			break;
+		case 4:
+			store.displayCustomerRentedVideos();
 			break;
 		case 5:
 			store.displayAllRentedVideos();
