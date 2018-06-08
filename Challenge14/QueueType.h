@@ -31,7 +31,7 @@ public:
 	void print() {
 
 		Node<Type>* temp;
-		temp = front;
+		temp = back;
 
 		while (temp != 0) {
 

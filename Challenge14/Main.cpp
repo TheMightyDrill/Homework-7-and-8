@@ -244,6 +244,7 @@ public:
 
 			cout << "Movie is out of stock..." << endl;
 			cout << "Checking waitlist" << endl;
+			cout << endl;
 
 			//checks to see if the customer who wants to rent is at the beginning of the queue
 			if (videolist[mId].checkQueue(cId)) {
@@ -300,6 +301,8 @@ public:
 
 		videolist[mId].checkInVideo();
 
+		cout << "Video is now available for renting" << endl;
+
 		//updates rented videolist
 		for (int i = 0; i < rentedVideos.size(); i++) {
 			if (videolist[mId].getName() == rentedVideos[i]) {
@@ -334,9 +337,19 @@ public:
 
 		int videoId;
 
+		cout << "~~ Videos ~~" << endl;
+
 		for (int i = 0; i < videolist.size(); i++) {
-			cout << "~~ Videos ~~" << endl;
 			cout <<"Video [" << i << "]: " << videolist[i].getName() << endl;
+
+			if (!(videolist[i].checkWaitingList())) {
+
+				cout << "[ID] Waiting List:" << endl;
+
+				videolist[i].printWaitingList();
+				cout << endl;
+
+			}
 		}
 		cout << "End of list" << endl;
 		cout << endl;
